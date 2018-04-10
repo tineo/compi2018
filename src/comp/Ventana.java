@@ -102,8 +102,8 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnElegir;
-    private javax.swing.JTextField txtOrigen;
-    private javax.swing.JTextField txtSalida;
+    public javax.swing.JButton btnElegir;
+    public javax.swing.JTextField txtOrigen;
+    public javax.swing.JTextField txtSalida;
     // End of variables declaration//GEN-END:variables
 }
