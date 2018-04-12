@@ -83,8 +83,8 @@ public class Main {
                                         System.out.println("02: "+m.group(2));
                                         System.out.println("03: "+m.group(3));
 
-                                        if (mapa.containsKey(m.group(3))) {
-                                            JOptionPane.showMessageDialog(v, "Se esta redeclarando la variable "+m.group(3)+".");
+                                        if (mapa.containsKey(m.group(2))) {
+                                            JOptionPane.showMessageDialog(v, "Se esta redeclarando la variable "+m.group(2)+".");
                                         }
 
                                         switch (m.group(1)){
