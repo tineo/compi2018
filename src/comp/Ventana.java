@@ -30,12 +30,18 @@ public class Ventana extends javax.swing.JFrame {
         btnElegir = new javax.swing.JButton();
         txtOrigen = new javax.swing.JTextField();
         txtSalida = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtResultado = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnElegir.setText("Elegir");
         btnElegir.setToolTipText("");
         btnElegir.setActionCommand("btnElegir");
+
+        txtResultado.setColumns(20);
+        txtResultado.setRows(5);
+        jScrollPane1.setViewportView(txtResultado);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -48,7 +54,8 @@ public class Ventana extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtOrigen, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnElegir)))
+                        .addComponent(btnElegir))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -58,8 +65,10 @@ public class Ventana extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnElegir)
                     .addComponent(txtOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(txtSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -103,7 +112,9 @@ public class Ventana extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnElegir;
+    public javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTextField txtOrigen;
+    public javax.swing.JTextArea txtResultado;
     public javax.swing.JTextField txtSalida;
     // End of variables declaration//GEN-END:variables
 }

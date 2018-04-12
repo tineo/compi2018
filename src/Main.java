@@ -79,30 +79,30 @@ public class Main {
                                     Matcher m = p.matcher(line);
 
                                     while(m.find()) {
-                                        System.out.println(m.group(1));
-                                        System.out.println(m.group(2));
-                                        System.out.println(m.group(3));
+                                        System.out.println("01: "+m.group(1));
+                                        System.out.println("02: "+m.group(2));
+                                        System.out.println("03: "+m.group(3));
 
                                         if (mapa.containsKey(m.group(3))) {
                                             JOptionPane.showMessageDialog(v, "Se esta redeclarando la variable "+m.group(3)+".");
                                         }
 
-                                        switch (m.group(2)){
+                                        switch (m.group(1)){
                                             case "int":
                                                 i++;
-                                                mapa.put(m.group(3), "i"+i); break;
+                                                mapa.put(m.group(2), "i"+i); break;
                                             case "float":
                                                 f++;
-                                                mapa.put(m.group(3), "f"+f); break;
+                                                mapa.put(m.group(2), "f"+f); break;
                                             case "double":
                                                 d++;
-                                                mapa.put(m.group(3), "d"+d);break;
+                                                mapa.put(m.group(2), "d"+d);break;
                                             case "long":
                                                 l++;
-                                                mapa.put(m.group(3), "l"+l); break;
+                                                mapa.put(m.group(2), "l"+l); break;
                                         }
 
-                                        id = m.group(3);
+                                        id = m.group(2);
 
 
                                     }
@@ -116,11 +116,11 @@ public class Main {
                                     {
                                         String token = m1.group( 1 ); //group 0 is always the entire match
                                         System.out.println("\n tokens: \n");
-                                        System.out.println("1: "+m1.group( 1 ));
-                                        System.out.println("2: "+m1.group( 2 ));
-                                        System.out.println("3: "+m1.group( 3 ));
-                                        System.out.println("4: "+m1.group( 4 ));
-                                        System.out.println("5: "+m1.group( 5 ));
+                                        System.out.println("1: " + m1.group( 1 ));
+                                        System.out.println("2: " + m1.group( 2 ));
+                                        System.out.println("3: " + m1.group( 3 ));
+                                        System.out.println("4: " + m1.group( 4 ));
+                                        System.out.println("5: " + m1.group( 5 ));
                                         //System.out.println("6: "+m1.group( 6 ));
                                         //System.out.println("7: "+m1.group( 7 ));
                                         //System.out.println("8: "+m1.group( 8 ));
@@ -142,6 +142,7 @@ public class Main {
                     while (it.hasNext()) {
                         Map.Entry pair = (Map.Entry)it.next();
                         System.out.println(pair.getKey() + " => " + pair.getValue());
+                        v.txtResultado.append(pair.getKey() + " => " + pair.getValue()+"\n");
                         it.remove(); // avoids a ConcurrentModificationException
                     }
 
