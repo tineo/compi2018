@@ -39,6 +39,9 @@ public class Main {
             int d = 0;
             int l = 0;
 
+            boolean error = false;
+            HashMap<String, String> mapa = new HashMap<>();
+
             JFileChooser fileChooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("*.txt", "txt", "text");
             fileChooser.setFileFilter(filter);
@@ -52,7 +55,7 @@ public class Main {
 
                 v.txtOrigen.setText(fichero.getAbsolutePath());
 
-                HashMap<String, String> mapa = new HashMap<>();
+
 
                 try {
 
@@ -79,12 +82,11 @@ public class Main {
                                     Matcher m = p.matcher(line);
 
                                     while(m.find()) {
-                                        System.out.println("01: "+m.group(1));
-                                        System.out.println("02: "+m.group(2));
-                                        System.out.println("03: "+m.group(3));
+
 
                                         if (mapa.containsKey(m.group(2))) {
                                             JOptionPane.showMessageDialog(v, "Se esta redeclarando la variable "+m.group(2)+".");
+                                            error = true;
                                         }
 
                                         switch (m.group(1)){
@@ -101,41 +103,99 @@ public class Main {
                                                 l++;
                                                 mapa.put(m.group(2), "l"+l); break;
                                         }
-
-                                        id = m.group(2);
-
-
                                     }
 
-                                    String aux = line;
-
-                                    Pattern p1 = Pattern.compile(regexs.get(3));
-                                    Matcher m1 = p1.matcher(line);
-                                    List<String> tokens = new LinkedList<>();
-                                    while(m1.find())
-                                    {
-                                        String token = m1.group( 1 ); //group 0 is always the entire match
-                                        System.out.println("\n tokens: \n");
-                                        System.out.println("1: " + m1.group( 1 ));
-                                        System.out.println("2: " + m1.group( 2 ));
-                                        System.out.println("3: " + m1.group( 3 ));
-                                        System.out.println("4: " + m1.group( 4 ));
-                                        System.out.println("5: " + m1.group( 5 ));
-                                        //System.out.println("6: "+m1.group( 6 ));
-                                        //System.out.println("7: "+m1.group( 7 ));
-                                        //System.out.println("8: "+m1.group( 8 ));
-                                        //System.out.println("9: "+m1.group( 9 ));
-                                        tokens.add(token);
-                                    }
-                                    //String fixedInput = aux.replaceAll(regexs.get(3), "$2 "+ mapa.get(id)+" = $4");
-                                    //System.out.println(fixedInput);
-
-                                    //String replacedString = line.replace(" a", " i0001");
-                                    //System.out.println("r:  "+replacedString);
                                 }
                             }
                         }
 
+                    }
+
+
+                    try(BufferedReader nbr = new BufferedReader(new FileReader(fichero))) {
+                        for(String linea; (linea = nbr.readLine()) != null; ) {
+
+
+                            String rgx = "\\s*(int|float|double|long).*";
+                            String aux = linea;
+                            String newlinea = "";
+                            if(Pattern.matches(rgx, linea)){
+                                List<String> lista = new ArrayList<String>();
+                                String tipo = "";
+                                if(linea.matches("(?i)\\s*int.*")){
+                                    //System.out.println("E w int");
+                                    lista = Arrays.asList(linea.split("int"));
+                                    tipo = "int";
+                                }else if (linea.matches("(?i)\\s*float.*")){
+                                    //System.out.println("E w float");
+                                    lista = Arrays.asList(linea.split("float"));
+                                    tipo = "float";
+                                }else if (linea.matches("(?i)\\s*double.*")){
+                                    //System.out.println("E w double");
+                                    lista = Arrays.asList(linea.split("double"));
+                                    tipo = "double";
+                                }else if (linea.matches("(?i)\\s*long.*")){
+                                    //System.out.println("E w long");
+                                    lista = Arrays.asList(linea.split("long"));
+                                    tipo = "long";
+                                }
+                                String linea2 = lista.get(1);
+
+                                for (int ix = 0; ix < linea2.length(); ix++){
+                                    char c = linea2.charAt(ix);
+                                    String key = Character.toString(c);
+                                    //System.out.println("char: "+c);
+
+                                    if(key.chars().allMatch(Character::isLetter)&& mapa.get(key) == null){
+                                        JOptionPane.showMessageDialog(v, "Variable "+ key +" no declarada");
+                                        error = true;
+                                    }
+
+                                    if(mapa.get(key) != null || (mapa.get(key) == null && mapa.containsKey(key))){
+                                        //System.out.println(mapa.get(key));
+                                        newlinea += mapa.get(key);
+                                    }else{
+
+                                        newlinea += key;
+                                    }
+                                }
+                                System.out.println("size: "+lista.size());
+                                newlinea = lista.get(0) +tipo+ newlinea;
+                            }else{
+                                for (int ix = 0; ix < linea.length(); ix++){
+                                    char c = linea.charAt(ix);
+                                    String key = Character.toString(c);
+                                    //System.out.println("char: "+c);
+
+                                    if(key.chars().allMatch(Character::isLetter)&& mapa.get(key) == null){
+                                        JOptionPane.showMessageDialog(v, "Variable "+ key +" no declarada");
+                                        error = true;
+                                    }
+
+                                    if(mapa.get(key) != null || (mapa.get(key) == null && mapa.containsKey(key))){
+                                    //    System.out.println(mapa.get(key));
+                                        newlinea += mapa.get(key);
+                                    }else{
+
+                                        newlinea += key;
+                                    }
+                                }
+                            }
+
+                            System.out.println(newlinea);
+
+                            if(!error) {
+                                long unixTime = System.currentTimeMillis() / 1000L;
+                                String fname = FilenameUtils.getBaseName(fichero.getAbsolutePath()) + "_"+unixTime+"." + FilenameUtils.getExtension(fichero.getAbsolutePath());
+                                String faname = FilenameUtils.concat(fichero.getParent(), fname);
+                                File nuevofichero = new File(faname);
+                                BufferedWriter writer = new BufferedWriter(new FileWriter(nuevofichero, true));
+                                writer.write(newlinea);
+                                writer.newLine();
+                                writer.close();
+                                v.txtSalida.setText(faname);
+                            }
+                        }
                     }
 
                     Iterator it = mapa.entrySet().iterator();
@@ -147,19 +207,6 @@ public class Main {
                     }
 
 
-                    /*String fname = FilenameUtils.getBaseName(fichero.getAbsolutePath())+"_nuevo."+FilenameUtils.getExtension(fichero.getAbsolutePath());
-                    String faname = FilenameUtils.concat(fichero.getParent(),fname);
-
-                    File nuevofichero = new File(faname);
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(nuevofichero, true));
-                    String[] words = nodeValue.split(" ");
-                    for (String word: words) {
-                        writer.write(word);
-                        writer.newLine();
-                    }
-                    writer.close();
-
-                    v.txtSalida.setText(faname);*/
                 }catch (Exception ex){
                     ex.printStackTrace();
                 }
